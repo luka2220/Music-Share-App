@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-// Returs all songs from DB
+// Returns all songs from DB
 export const GET_SONGS = gql`
   query getSongs {
     songs(order_by: { created_at: desc }) {
@@ -14,17 +14,9 @@ export const GET_SONGS = gql`
   }
 `;
 
-// Retrievies all the queued songs
-// Only runs on the client
+// Returns the queuedSongList from client side state
 export const GET_QUEUED_SONGS = gql`
   query getQueuedSongs {
-    queue @client {
-      id
-      duration
-      atrist
-      thumbnail
-      title
-      url
-    }
+    queuedSongItems @client
   }
 `;

@@ -1,23 +1,20 @@
 import { Delete } from "@mui/icons-material";
 import { Avatar, IconButton, Typography, useMediaQuery } from "@mui/material";
 import React from "react";
+import { GET_QUEUED_SONGS } from "../graphql/queries";
+import { useQuery } from "@apollo/client";
 
-export default function QueuedSongList({ queue }) {
+export default function QueuedSongList() {
+  const { data } = useQuery(GET_QUEUED_SONGS);
   const greaterThanMd = useMediaQuery((theme) => theme.breakpoints.up("md"));
-
-  const song = {
-    title: "sun",
-    artist: "憂鬱",
-    thumbnail: "https://img.youtube.com/vi/oxoqm05c7yA/0.jpg",
-  };
 
   return (
     greaterThanMd && (
       <div style={{ margin: "10px 0" }}>
         <Typography variant="button" color="textSecondary">
-          QUEUE (5)
+          QUEUE ({data.queuedSongItems.length})
         </Typography>
-        {Array.from({ length: 5 }, () => song).map((song, i) => (
+        {data.queuedSongItems.map((song, i) => (
           <QueuedSong key={i} song={song} />
         ))}
       </div>
@@ -25,7 +22,7 @@ export default function QueuedSongList({ queue }) {
   );
 }
 
-function QueuedSong({ song }) {
+function QueuedSong({ song, test }) {
   const { thumbnail, artist, title } = song;
 
   return (

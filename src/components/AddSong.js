@@ -14,6 +14,7 @@ import ReactPlayer from "react-player";
 import SoundCloudPlayer from "react-player/soundcloud";
 import YouTubePlayer from "react-player/youtube";
 import { ADD_SONG } from "../graphql/mutations";
+import { GET_SONGS } from "../graphql/queries";
 import { useMutation } from "@apollo/client";
 
 const DEFAULT_SONG = {
@@ -50,6 +51,8 @@ export default function AddSong() {
           thumbnail: thumbnail.length > 0 ? thumbnail : null,
           url: url.length > 0 ? url : null,
         },
+        // Executes the GET_SONGS query right after a new song is added
+        refetchQueries: [{ query: GET_SONGS }],
       });
 
       // close dialog card & resetting state values
@@ -70,7 +73,7 @@ export default function AddSong() {
   }
 
   function handleInputError(textField) {
-    return error?.graphQLErrors[0]?.extensions?.path.includes(textField)
+    return error?.graphQLErrors[0]?.extensions?.path.includes(textField);
   }
 
   async function handleEditSong({ player }) {

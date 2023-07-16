@@ -12,6 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
+import { addSongToQueue } from "../graphql/cache";
 
 export default function SongList() {
   const { loading, error, data } = useQuery(GET_SONGS);
@@ -57,6 +58,10 @@ function Song({ song }) {
     dispatch(state.isPlaying ? { type: "PAUSE_SONG" } : { type: "PLAY_SONG" });
   }
 
+  function handleAddSongToQueue() {
+    addSongToQueue(song);
+  }
+
   return (
     <Card sx={{ margin: "12px" }}>
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -87,7 +92,11 @@ function Song({ song }) {
             >
               {currentSongPlaying ? <Pause /> : <PlayArrow />}
             </IconButton>
-            <IconButton size="small" sx={{ color: "#6200ea" }}>
+            <IconButton
+              onClick={handleAddSongToQueue}
+              size="small"
+              sx={{ color: "#6200ea" }}
+            >
               <Save />
             </IconButton>
           </CardActions>
