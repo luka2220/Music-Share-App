@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-// mui components
 import {
   InputAdornment,
   TextField,
@@ -25,11 +24,13 @@ const DEFAULT_SONG = {
 };
 
 export default function AddSong() {
-  const [addSong, { error }] = useMutation(ADD_SONG);
+  // State
   const [dialog, setDialog] = useState(false);
   const [url, setUrl] = useState("");
   const [playable, setPlayable] = useState(false);
   const [song, setSong] = useState(DEFAULT_SONG);
+  //GraphQL Mutation
+  const [addSong, { error }] = useMutation(ADD_SONG);
 
   // Check if URL can be played
   useEffect(() => {
@@ -55,7 +56,7 @@ export default function AddSong() {
         refetchQueries: [{ query: GET_SONGS }],
       });
 
-      // close dialog card & resetting state values
+      // close dialog card & reset state values
       handleCloseDialog();
       setSong(DEFAULT_SONG);
       setUrl("");
@@ -68,7 +69,7 @@ export default function AddSong() {
     const { name, value } = event.target;
     setSong((prevSong) => ({
       ...prevSong,
-      [name]: value, // updateding the name property in the song object
+      [name]: value, // updating the name property in the song object
     }));
   }
 
@@ -79,7 +80,6 @@ export default function AddSong() {
   async function handleEditSong({ player }) {
     const nestedPlayer = player.player.player;
     let songData;
-    //console.log(nestedPlayer);
 
     if (nestedPlayer.getVideoData) {
       songData = getYoutubeInfo(nestedPlayer);

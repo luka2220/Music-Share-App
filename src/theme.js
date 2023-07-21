@@ -1,6 +1,6 @@
 import { createTheme } from "@mui/material/styles";
 
-// setting primary, secondary colours of our application
+// Default MUI theme of the application 
 const theme = createTheme({
   palette: {
     mode: "dark",

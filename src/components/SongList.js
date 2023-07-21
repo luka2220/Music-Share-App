@@ -1,3 +1,4 @@
+import React, { useContext, useEffect, useState } from "react";
 import { GET_SONGS } from "../graphql/queries";
 import { SongContext } from "../App";
 import { useQuery } from "@apollo/client";
@@ -11,8 +12,7 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
-import { addSongToQueue } from "../graphql/cache";
+import { addOrRemoveFromQueue } from "../graphql/cache";
 
 export default function SongList() {
   const { loading, error, data } = useQuery(GET_SONGS);
@@ -32,7 +32,7 @@ export default function SongList() {
     );
   }
 
-  if (error) return <div>Error fetching songs{console.log(error.message)}</div>;
+  if (error) return <div>Error fetching songs ...</div>;
 
   return (
     <div>
@@ -45,8 +45,10 @@ export default function SongList() {
 
 function Song({ song }) {
   const { title, artist, thumbnail, id } = song;
-  const { state, dispatch } = useContext(SongContext);
+  // State
   const [currentSongPlaying, setCurrentSongPlaying] = useState(false);
+  // Context
+  const { state, dispatch } = useContext(SongContext);
 
   useEffect(() => {
     const isSongPlaying = state.isPlaying && id === state.song.id;
@@ -59,7 +61,7 @@ function Song({ song }) {
   }
 
   function handleAddSongToQueue() {
-    addSongToQueue(song);
+    addOrRemoveFromQueue(song);
   }
 
   return (

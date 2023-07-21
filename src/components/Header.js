@@ -8,7 +8,7 @@ export default function Header() {
       <Toolbar>
         <HeadsetTwoTone />
         <Typography sx={{ marginLeft: "10px" }} variant="h6" component="h1">
-          Apollo Music Player
+          Music Library App
         </Typography>
       </Toolbar>
     </AppBar>

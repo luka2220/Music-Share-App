@@ -9,7 +9,7 @@ import songReducer from "./reducer";
 // mui components
 import { Grid, useMediaQuery, Hidden } from "@mui/material";
 
-// Song player context with default song
+// Default song on App load
 export const SongContext = createContext({
   song: {
     id: "af53e6b6-241f-453d-85b5-1d65e1f33f19",

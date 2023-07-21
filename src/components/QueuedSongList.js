@@ -1,8 +1,9 @@
+import React from "react";
 import { Delete } from "@mui/icons-material";
 import { Avatar, IconButton, Typography, useMediaQuery } from "@mui/material";
-import React from "react";
 import { GET_QUEUED_SONGS } from "../graphql/queries";
 import { useQuery } from "@apollo/client";
+import { addOrRemoveFromQueue } from "../graphql/cache";
 
 export default function QueuedSongList() {
   const { data } = useQuery(GET_QUEUED_SONGS);
@@ -14,16 +15,24 @@ export default function QueuedSongList() {
         <Typography variant="button" color="textSecondary">
           QUEUE ({data.queuedSongItems.length})
         </Typography>
-        {data.queuedSongItems.map((song, i) => (
-          <QueuedSong key={i} song={song} />
-        ))}
+        {data.queuedSongItems.length > 0 ? (
+          data.queuedSongItems.map((song, i) => (
+            <QueuedSong key={i} song={song} />
+          ))
+        ) : (
+          <Typography>No Queued Songs Available</Typography>
+        )}
       </div>
     )
   );
 }
 
-function QueuedSong({ song, test }) {
+function QueuedSong({ song }) {
   const { thumbnail, artist, title } = song;
+
+  function handleRemoveSong() {
+    addOrRemoveFromQueue(song);
+  }
 
   return (
     <div
@@ -56,7 +65,7 @@ function QueuedSong({ song, test }) {
           {artist}
         </Typography>
       </div>
-      <IconButton>
+      <IconButton onClick={handleRemoveSong}>
         <Delete color="error" />
       </IconButton>
     </div>

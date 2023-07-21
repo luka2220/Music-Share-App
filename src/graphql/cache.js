@@ -1,10 +1,22 @@
 import { makeVar, InMemoryCache } from "@apollo/client";
 
-const songItems = [];
-const queuedSongItems = makeVar(songItems);
+const clientHasQueue = Boolean(localStorage.getItem("queue"));
+const queuedSongItems = clientHasQueue
+  ? makeVar(JSON.parse(localStorage.getItem("queue")))
+  : makeVar([]);
 
-export function addSongToQueue(song) {
-  queuedSongItems([song, ...queuedSongItems()])
+// Adds/Removes song in the queue, based on if it is currently in the queue
+export function addOrRemoveFromQueue(song) {
+  const isInQueue = queuedSongItems().some((qSong) => qSong.id === song.id);
+
+  // Deletes queued song if it exists otherwise adds song to queue
+  const newQueue = isInQueue
+    ? queuedSongItems().filter((qSong) => qSong.id !== song.id)
+    : [...queuedSongItems(), song];
+
+
+  queuedSongItems(newQueue);
+  localStorage.setItem("queue", JSON.stringify(queuedSongItems()));
 }
 
 // Defining how the cache will handle client side data (queuedSongItems)
